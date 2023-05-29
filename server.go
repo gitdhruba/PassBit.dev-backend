@@ -20,8 +20,9 @@ func main() {
 	//Load env file
 	config.Loadenv()
 
-	//connect and initiate db
+	//connect to db and automigrate all models
 	database.ConnectDB()
+	database.AutomigrateModels()
 
 	//create new fiber app instance
 	app := fiber.New()

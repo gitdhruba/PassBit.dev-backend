@@ -1,12 +1,13 @@
 package database
 
-//This package handles the connection of external postgres DB
+//This package handles the connection of external postgres DB and automigration
 //Author : Dhruba Sinha
 
 import (
 	"fmt"
 	"os"
 	"passbit/config"
+	"passbit/models"
 	"strconv"
 
 	"gorm.io/driver/postgres"
@@ -43,4 +44,15 @@ func ConnectDB() {
 	//set DB logger
 	DB.Logger = logger.Default.LogMode(logger.Info)
 
+}
+
+// following function automigrates all models
+func AutomigrateModels() {
+	usermodel := new(models.User) //user model
+
+	//automigrate
+	if err := DB.AutoMigrate(usermodel); err != nil {
+		fmt.Println("ERROR : could not automigrate models")
+		os.Exit(1)
+	}
 }
