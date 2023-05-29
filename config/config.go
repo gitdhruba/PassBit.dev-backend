@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Config(key string) string {
+func Loadenv() {
 
 	//load env file
 	err := godotenv.Load("./app.env")
@@ -15,6 +15,10 @@ func Config(key string) string {
 		fmt.Println("ERROR: could not load env file")
 		os.Exit(1)
 	}
+}
+
+func Config(key string) string {
 
 	return os.Getenv(key)
+
 }
