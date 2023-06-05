@@ -8,7 +8,8 @@ import "passbit/handlers"
 func CreateEndpoints() {
 
 	//authhandlers
-	Auth.Post("/signin", handlers.SigninUser) //endpoint: "/passbitapi/auth/signin"
+	Auth.Post("/signin", handlers.SigninUser) //endpoint: "/passbitapi/auth/signin" for signin
+	Auth.Get("/reissueaccesstoken")           //endpoint: "/passbitapi/auth/reissueaccesstoken" for reissuence of accesstoken
 
 	//protected
 

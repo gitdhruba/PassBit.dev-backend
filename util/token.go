@@ -1,6 +1,6 @@
 package util
 
-//This package contains function for creating jwt tokens and verifying Google Idtoken
+//This package contains function for creating jwt tokens , verifying Googleaccesstoken and middleware
 //Author : Dhruba Sinha
 
 import (
@@ -55,6 +55,11 @@ func VerifyGoogleAccessToken(accesstoken string) (string, string, bool, error) {
 	//parse claims
 	var claims map[string]interface{}
 	if err := json.Unmarshal([]byte(string(resbody)), &claims); err != nil {
+		return "", "", false, err
+	}
+
+	err = claims["error"].(error)
+	if err != nil {
 		return "", "", false, err
 	}
 
