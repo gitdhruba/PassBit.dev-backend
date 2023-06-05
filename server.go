@@ -9,6 +9,7 @@ import (
 	"os"
 	"passbit/config"
 	"passbit/database"
+	"passbit/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -28,6 +29,9 @@ func main() {
 	app := fiber.New()
 	//apply default CORS middleware for now
 	app.Use(cors.New())
+
+	//setup routes
+	routes.SetupRoutes(app)
 
 	//start listening to PORT
 	portstring := fmt.Sprintf(":%s", config.Config("PORT"))
