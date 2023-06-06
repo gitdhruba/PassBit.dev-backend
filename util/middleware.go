@@ -4,6 +4,7 @@ package util
 //Author : Dhruba Sinha
 
 import (
+	"fmt"
 	"passbit/config"
 	"time"
 
@@ -16,11 +17,22 @@ func Middleware() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 
 		//get accesstoken from Headers
-		accesstoken := c.GetReqHeaders()["access_token"]
+		type RequestHeader struct {
+			Accesstoken string `reqHeader:"access_token"`
+		}
 
+		var reqh RequestHeader
+		if err := c.ReqHeaderParser(&reqh); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": true,
+				"msg":   err,
+			})
+		}
+
+		fmt.Println(reqh.Accesstoken)
 		//parse claims
 		claims := jwt.StandardClaims{}
-		token, _ := jwt.ParseWithClaims(accesstoken, &claims,
+		token, _ := jwt.ParseWithClaims(reqh.Accesstoken, &claims,
 			func(token *jwt.Token) (interface{}, error) {
 				return config.Config("JWTSECRET"), nil
 			})

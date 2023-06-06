@@ -48,10 +48,10 @@ func ConnectDB() {
 
 // following function automigrates all models
 func AutomigrateModels() {
-	usermodel := new(models.User) //user model
-
+	usermodel := new(models.User)   //user model
+	mpassmodel := new(models.Mpass) //masterpassword model
 	//automigrate
-	if err := DB.AutoMigrate(usermodel); err != nil {
+	if err := DB.AutoMigrate(usermodel, mpassmodel); err != nil {
 		fmt.Println("ERROR : could not automigrate models")
 		os.Exit(1)
 	}

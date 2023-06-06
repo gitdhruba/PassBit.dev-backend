@@ -32,12 +32,12 @@ func SigninUser(c *fiber.Ctx) error {
 	}
 
 	//verify Googleaccesstoken
-	userfromtoken, emailfromtoken, isverifiedemail, err := util.VerifyGoogleAccessToken(req.Googleaccesstoken)
-	if err != nil {
-		fmt.Println("ERROR : ", err)
+	userfromtoken, emailfromtoken, isverifiedemail, ve := util.VerifyGoogleAccessToken(req.Googleaccesstoken)
+	if ve {
+		fmt.Println("ERROR : cann't verify googleaccesstoken")
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
-			"msg":   err,
+			"msg":   "cann't verify googleaccesstoken",
 		})
 	}
 
@@ -109,12 +109,12 @@ func ReIssueAccesstoken(c *fiber.Ctx) error {
 	}
 
 	//verify googleaccesstoken
-	username, email, isverifiedemail, err := util.VerifyGoogleAccessToken(req.Googleaccesstoken)
-	if err != nil {
-		fmt.Println("ERROR : ", err)
+	username, email, isverifiedemail, ve := util.VerifyGoogleAccessToken(req.Googleaccesstoken)
+	if ve {
+		fmt.Println("ERROR : cann't verify googleaccesstoken")
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
-			"msg":   err,
+			"msg":   "cann't verify googleaccesstoken",
 		})
 	}
 

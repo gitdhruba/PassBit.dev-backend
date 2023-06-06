@@ -36,12 +36,12 @@ func GenerateAccessToken(username string) (string, error) {
 }
 
 // This function verifies the Google Idtoken
-func VerifyGoogleAccessToken(accesstoken string) (string, string, bool, error) {
+func VerifyGoogleAccessToken(accesstoken string) (string, string, bool, bool) {
 
 	//call googleapis endpoint to verify the token
 	res, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + accesstoken)
 	if err != nil {
-		return "", "", false, err
+		return "", "", false, true
 	}
 
 	defer res.Body.Close()
@@ -49,19 +49,18 @@ func VerifyGoogleAccessToken(accesstoken string) (string, string, bool, error) {
 	//read response body
 	resbody, err := io.ReadAll(res.Body)
 	if err != nil {
-		return "", "", false, err
+		return "", "", false, true
 	}
 
 	//parse claims
 	var claims map[string]interface{}
 	if err := json.Unmarshal([]byte(string(resbody)), &claims); err != nil {
-		return "", "", false, err
+		return "", "", false, true
 	}
 
-	err = claims["error"].(error)
-	if err != nil {
-		return "", "", false, err
+	if claims["error"] != nil {
+		return "", "", false, true
 	}
 
-	return claims["name"].(string), claims["email"].(string), claims["verified_email"].(bool), nil
+	return claims["name"].(string), claims["email"].(string), claims["verified_email"].(bool), false
 }
